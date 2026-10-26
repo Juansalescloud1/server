@@ -19,6 +19,9 @@
     "url": "https://github.com/Juansalescloud1/server/issues"
   },
   "homepage": "https://github.com/Juansalescloud1/server#readme",
+  "engines": {
+    "node": ">=18.x"
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.3.0",

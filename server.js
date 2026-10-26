@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 // ===== MIDDLEWARES =====
 app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors());
 app.use(express.static('.'));
 
@@ -162,7 +163,7 @@ app.post('/api/pedidos', async (req, res) => {
   }
 });
 
-// Listar pedidos (Filtra por utilizador se houver ?usuarioId=xyz, ou retorna todos para o Admin)
+// Listar pedidos
 app.get('/api/pedidos', async (req, res) => {
   try {
     const { usuarioId } = req.query;
@@ -175,7 +176,7 @@ app.get('/api/pedidos', async (req, res) => {
   }
 });
 
-// Atualizar o status de um pedido (Utilizado pelo Admin)
+// Atualizar o status de um pedido
 app.put('/api/pedidos/:id/status', async (req, res) => {
   try {
     const { status } = req.body;
@@ -194,7 +195,11 @@ app.put('/api/pedidos/:id/status', async (req, res) => {
   }
 });
 
-// ===== INICIAR O SERVIDOR =====
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// ===== INICIAR O SERVIDOR / EXPORTAR PARA A VERCEL =====
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+}
+
+module.exports = app;
